@@ -8,8 +8,9 @@ import javax.swing.border.EmptyBorder;
  public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
+    public static  ChartPanel chartPanel = new ChartPanel("瞬时体积流量");
 
-	/**
+		/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
@@ -39,9 +40,9 @@ import javax.swing.border.EmptyBorder;
 		
 		MenuEdit menuedit = new MenuEdit();
 	    setJMenuBar(menuedit.menuBar);
-	    
-	    DisplayPanel dp = new DisplayPanel();
-	    contentPane.add(dp, BorderLayout.WEST);
+	  
+	    //    DisplayPanel dp = new DisplayPanel();
+       contentPane.add(chartPanel, BorderLayout.WEST);
 	    
 	    EastPanel ep = new  EastPanel();
 	    contentPane.add(ep,BorderLayout.EAST);

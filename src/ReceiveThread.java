@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,6 +27,8 @@ public class ReceiveThread extends Thread {
  	float area;
     static	double accumulateFlow=0;
     static double accumulateQuantity=0;
+    DecimalFormat df=new DecimalFormat("0.0000");//返回的数据格式
+	 
 	public ReceiveThread(InputStream is) 
 	{
 		this.is = is ;
@@ -59,18 +63,23 @@ public class ReceiveThread extends Thread {
 	        	    		  System.out.println(new Date()+"的累积流量是"+accumulateFlow);
 	        	    		  Calendar time=Calendar.getInstance();
 	        	    		  System.out.println(time.getTimeInMillis()+"\n");*/
-	        	    		 
-	        	    		  String strInstanceFlow=String.valueOf(instanceFlow);
-	        	    		  StatePanel.jtf_7.setText(strInstanceFlow);//返回瞬时流量（体积）
 	        	    		  
+	        	    		  
+	        	    		  String strInstanceFlow=String.valueOf(df.format(instanceFlow));
+	        	    		  StatePanel.jtf_7.setText(strInstanceFlow);//返回瞬时流量（体积）
+         	    		  
 	        	    		  
 	        	    		  accumulateFlow= (accumulateFlow+instanceFlow*0.02);
-	        	    		  String straccumulateFlow=String.valueOf(accumulateFlow);
+	        	    		  String straccumulateFlow=String.valueOf(df.format(accumulateFlow));
 	        	    		  StatePanel.jtf_8.setText(straccumulateFlow);//(返回累积流量-体积)
+	        	    		  
+	        	    		  java.util.Calendar c=java.util.Calendar.getInstance(); 
+	        	    		  long time=c.getTimeInMillis();
+	        	    		  MainFrame.chartPanel.addData(time, instanceFlow);//(更新左边图表)
 	        	    		  
 	        	    		 accumulateQuantity= accumulateFlow*SetParameter.bulkDensity;
 	        	    		 float AccumulateFlowQuantity=(float) (accumulateQuantity);
-	        	    		 String strAccumulateFlowQuantity=String.valueOf(AccumulateFlowQuantity);
+	        	    		 String strAccumulateFlowQuantity=String.valueOf(df.format(AccumulateFlowQuantity));
 	        	    		 StatePanel.jtf_9.setText(strAccumulateFlowQuantity);//(返回累积流量-质量)
 	        	    				  
 	        	    		 
